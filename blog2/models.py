@@ -7,3 +7,6 @@ class Post(models.Model):
 
     create_at = models.DateTimeField()
     #author = 
+
+    def __str__(self):
+        return f'[{self.pk}]{self.title}'
