@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import render
 
 # Create your models here.
 class Post(models.Model):
@@ -11,3 +12,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f'[{self.pk}]{self.title}'
+    
+    def get_absolute_url(self):
+        return f'/blog/{self.pk}/'
