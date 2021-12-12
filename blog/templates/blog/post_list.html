@@ -83,27 +83,20 @@
         <div class="container my-3">
             <div class="row">
                 <div class="col-md-8 col-lg-9">
-                    <h1>Blog</h1>
+                    {% for p in post_list %}
                     <!-- Blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="/Users/jinkanghoon/github/blog-creating-to-django/blog/templates/blog/농장사진.jpeg" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="#" alt="..." /></a>
                         <div class="card-body">
-                            <div class="small text-muted">January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
+                            <div class="small text-muted">{{ p.create_at }}
+                                <a href="#">작성자 명</a>
+                            </div>
+                            <h2 class="card-title h4">{{ p.title }}</h2>
+                            <p class="card-text">{{p.content }}</p>
+                            <a class="btn btn-primary" href="{{ p.get_absolute_url }}">Read more →</a>
                         </div>
                     </div>
-                    <!-- Blog post-->
-                    <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="/Users/jinkanghoon/github/blog-creating-to-django/blog/templates/blog/고추.jpeg" alt="..." /></a>
-                        <div class="card-body">
-                            <div class="small text-muted">January 1, 2021</div>
-                            <h2 class="card-title h4">Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
-                        </div>
-                    </div>
+                    {% endfor %}
                    
                     <!-- Pagination-->
                     <nav aria-label="Pagination">
