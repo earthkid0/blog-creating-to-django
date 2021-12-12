@@ -27,3 +27,4 @@ from .models import Post
 # CBV 방식
 class PostList(ListView):
     model = Post
+    ordering = '-pk'
