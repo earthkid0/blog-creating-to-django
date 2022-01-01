@@ -14,7 +14,7 @@
         {% endif %}
         <div class="card-body">
             <div class="small text-muted">{{ p.create_at }}
-                <a href="#">작성자 명</a>
+                <a href="#">{{ p.author | lower }}</a>
             </div>
             <h2 class="card-title h4">{{ p.title }}</h2>
             {% if p.hook_text %}

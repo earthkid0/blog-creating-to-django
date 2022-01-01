@@ -16,7 +16,7 @@
                 <!-- Post meta content-->
                 <div class="text-muted fst-italic mb-2">{{ post.create_at }}</div>
                 <!-- Author-->
-                <p class="lead">by <a href="#">작성자 명</a>
+                <p class="lead">by <a href="#">{{ post.author | lower }}</a>
                 </p>
             </header>
             <!-- Preview image figure-->
