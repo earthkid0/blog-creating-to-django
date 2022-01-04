@@ -1,4 +1,5 @@
 from unittest.main import main
+from django.db.models import manager
 from django.test import TestCase
 from django.test.client import Client
 from bs4 import BeautifulSoup
@@ -64,6 +65,7 @@ class TestView(TestCase):
             self.assertIn(f'{self.category_고추.name} ({self.category_고추.post_set.count()})', categories_card.text)
             self.assertIn(f'{self.category_옥수수.name} ({self.category_옥수수.post_set.count()})', categories_card.text)
             self.assertIn(f'미분류 (1)', categories_card.text)
+            
 
     def test_post_list(self):
         #포스트가 있는경우
@@ -143,6 +145,22 @@ class TestView(TestCase):
         self.assertIn(self.tag_hello.name, post_area.text)
         self.assertNotIn(self.tag_python.name, post_area.text)
         self.assertNotIn(self.tag_python_kor.name, post_area.text)
+
+    def test_tag_page(self):
+        response = self.client.get(self.tag_hello.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        self.navbar_test(soup)
+        self.category_card_test(soup)
+
+        self.assertIn(self.tag_hello.name, soup.h1.text)
+
+        main_area = soup.find('div', id='main-area')
+        self.assertIn(self.tag_hello.name, main_area.text)
+        self.assertIn(self.post_001.title, main_area.text)
+        self.assertNotIn(self.post_002.title, main_area.text)
+        self.assertNotIn(self.post_003.title, main_area.text)
 
     def test_category_page(self):
         response = self.client.get(self.category_고추.get_absolute_url())
