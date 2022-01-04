@@ -1,5 +1,6 @@
 from django.views.generic import ListView,DetailView
 from .models import Category, Post
+from django.shortcuts import render
 # Create your views here.
 #FBV 방식
 # def index(request):
@@ -33,6 +34,20 @@ class PostList(ListView):
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
+
+    def category_page(request, slug):
+        category = Category.objects.get(slug=slug)
+
+        return render(
+            request,
+            'blog/post_list.html',
+            {
+                'post_list':Post.objects.filter(category=category),
+                'categories':Category.objects.all(),
+                'no_category_post_count':Post.objects.filter(category=None).count(),
+                'category':category,
+            }
+        )    
 class PostDetail(DetailView):
     model = Post
 
@@ -41,3 +56,4 @@ class PostDetail(DetailView):
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
+
