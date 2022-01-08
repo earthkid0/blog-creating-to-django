@@ -12,6 +12,8 @@ class TestView(TestCase):
         self.client = Client()
         self.user_earthkid0 = User.objects.create_user(username='earthkid0',password='somepassword')
         self.user_deadbort = User.objects.create_user(username='deadbort',password='somepassword')
+        self.user_earthkid0.is_staff = True
+        self.user_earthkid0.save()
 
         self.category_고추 = Category.objects.create(name='고추', slug='고추')
         self.category_옥수수 = Category.objects.create(name='옥수수', slug='옥수수')
@@ -183,7 +185,12 @@ class TestView(TestCase):
         response = self.client.get('/blog/create_post/')
         self.assertNotEqual(response.status_code, 200)
 
-        #로그인을 한다.
+        #스태프가 아닌 사람이 로그인 한다.
+        self.client.login(username='deadbort', password='somepassword')
+        response = self.client.get('/blog/creat_post/')
+        self.assertNotEqual(response.status_code, 200)
+
+        #스태프로 로그인을 한다.
         self.client.login(username='earthkid0', password='somepassword')
 
         response = self.client.get('/blog/create_post/')
