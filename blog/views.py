@@ -73,7 +73,7 @@ def tag_page(request, slug):
     )
 
 
-class PostCreate(LoginRequiredMixin, CreateView, UserPassesTestMixin):
+class PostCreate(LoginRequiredMixin, UserPassesTestMixin ,CreateView):
     model = Post
     fields = ['title', 'hook_text', 'content', 'head_image', 'file_upload', 'category']
 

@@ -253,6 +253,6 @@ class TestView(TestCase):
         )
         soup = BeautifulSoup(response.content, 'html.parser')
         main_area = soup.find('div', id='main-area')
-        self.assertIn('세 번째 포스트를 수정했습니다.')
-        self.assertIn('안녕 세계? 우린 하나')
+        self.assertIn('세 번째 포스트를 수정했습니다.', main_area.text)
+        self.assertIn('안녕 세계? 우린 하나', main_area.text)
         self.assertIn(self.category_옥수수.name, main_area.text)
