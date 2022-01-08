@@ -12,8 +12,8 @@ class TestView(TestCase):
         self.client = Client()
         self.user_earthkid0 = User.objects.create_user(username='earthkid0',password='somepassword')
         self.user_deadbort = User.objects.create_user(username='deadbort',password='somepassword')
-        self.user_earthkid0.is_staff = True
-        self.user_earthkid0.save()
+        self.user_deadbort.is_staff = True
+        self.user_deadbort.save()
 
         self.category_고추 = Category.objects.create(name='고추', slug='고추')
         self.category_옥수수 = Category.objects.create(name='옥수수', slug='옥수수')
@@ -186,12 +186,12 @@ class TestView(TestCase):
         self.assertNotEqual(response.status_code, 200)
 
         #스태프가 아닌 사람이 로그인 한다.
-        self.client.login(username='deadbort', password='somepassword')
-        response = self.client.get('/blog/creat_post/')
+        self.client.login(username='earthkid0', password='somepassword')
+        response = self.client.get('/blog/create_post/')
         self.assertNotEqual(response.status_code, 200)
 
         #스태프로 로그인을 한다.
-        self.client.login(username='earthkid0', password='somepassword')
+        self.client.login(username='deadbort', password='somepassword')
 
         response = self.client.get('/blog/create_post/')
         self.assertEqual(response.status_code, 200)
@@ -208,7 +208,51 @@ class TestView(TestCase):
                 'content':"Post Form 페이지를 만듭시다.",
             }
         )
-        self.assertEqual(Post.objects.count(), 4)
         last_post = Post.objects.last()
         self.assertEqual(last_post.title, "Post Form 만들기")
-        self.assertEqual(last_post.author.username, 'earthkid0')
+        self.assertEqual(last_post.author.username, 'deadbort')
+
+    def test_update_post(self):
+        update_post_url = f'/blog/update_post/{self.post_003.pk}/'
+
+
+        #로그인하지 않은 경우
+        response = self.client.get(update_post_url)
+        self.assertNotEqual(response.status_code, 200)
+
+        #로그인은 했지만 작성자가 아닌 겨우
+        self.assertNotEqual(self.post_003.author, self.user_earthkid0)
+        self.client.login(
+            username = self.user_earthkid0.username,
+            password = 'somepassword'
+        )
+        response = self.client.get(update_post_url)
+        self.assertEqual(response.status_code, 403)
+
+        #작성자가 접근하는 경우
+        self.client.login(
+            username = self.post_003.author.username,
+            password = 'somepassword'
+        )    
+        response = self.client.get(update_post_url)
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        self.assertEqual('Edit Post - Blog', soup.title.text)
+        main_area = soup.find('div', id='main-area')
+        self.assertIn('Edit Post', main_area.text)
+
+        response = self.client.post(
+            update_post_url,
+            {
+                'title':'세 번째 포스트를 수정했습니다.',
+                'content':'안녕 세계? 우린 하나',
+                'category':self.category_옥수수.pk
+            },
+            follow = True
+        )
+        soup = BeautifulSoup(response.content, 'html.parser')
+        main_area = soup.find('div', id='main-area')
+        self.assertIn('세 번째 포스트를 수정했습니다.')
+        self.assertIn('안녕 세계? 우린 하나')
+        self.assertIn(self.category_옥수수.name, main_area.text)
