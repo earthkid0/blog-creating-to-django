@@ -19,7 +19,7 @@ class TestView(TestCase):
         self.category_고추 = Category.objects.create(name='고추', slug='고추')
         self.category_옥수수 = Category.objects.create(name='옥수수', slug='옥수수')
 
-        self.tag_python_kor = Tag.objects.create(name='파이썬공부', slug='파이썬-공부')
+        self.tag_python_kor = Tag.objects.create(name='파이썬 공부', slug='파이썬-공부')
         self.tag_python = Tag.objects.create(name='python', slug='python')
         self.tag_hello = Tag.objects.create(name='hello', slug='hello')
 
@@ -254,12 +254,17 @@ class TestView(TestCase):
         main_area = soup.find('div', id='main-area')
         self.assertIn('Edit Post', main_area.text)
 
+        tag_str_input = main_area.find('input', id='id_tags_str')
+        self.assertTrue(tag_str_input)
+        self.assertIn('파이썬 공부; python', tag_str_input.attrs['value'])
+
         response = self.client.post(
             update_post_url,
             {
                 'title':'세 번째 포스트를 수정했습니다.',
                 'content':'안녕 세계? 우린 하나',
-                'category':self.category_옥수수.pk
+                'category':self.category_옥수수.pk,
+                'tags_str':'파이썬 공부; 한글 태그, some tag'
             },
             follow = True
         )
@@ -268,3 +273,7 @@ class TestView(TestCase):
         self.assertIn('세 번째 포스트를 수정했습니다.', main_area.text)
         self.assertIn('안녕 세계? 우린 하나', main_area.text)
         self.assertIn(self.category_옥수수.name, main_area.text)
+        self.assertIn('파이썬 공부', main_area.text)
+        self.assertIn('한글 태그', main_area.text)
+        self.assertIn('some tag', main_area.text)
+        self.assertNotIn('Python', main_area.text)
