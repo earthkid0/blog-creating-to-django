@@ -35,6 +35,7 @@ from django.shortcuts import get_object_or_404
 class PostList(ListView):
     model = Post
     ordering = '-pk'
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data()
@@ -108,9 +109,6 @@ class PostCreate(LoginRequiredMixin, UserPassesTestMixin ,CreateView):
                     self.object.tags.add(tag)
 
             return response
-         
-
-
         else:
                 return redirect('/blog/')
 
