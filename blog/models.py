@@ -59,12 +59,24 @@ class Post(models.Model):
     def get_content_markdown(self):
         return markdown(self.content)
 
+    def get_avatar_url(self):
+        if self.author.socialaccount_set.exists():
+            return self.author.socialaccount_set.first().get_avatar_url()
+        else:
+            return 'http://placehold.it/50x50'
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def get_avatar_url(self):
+        if self.author.socialaccount_set.exists():
+            return self.author.socialaccount_set.first().get_avatar_url()
+        else:
+            return 'http://placehold.it/50x50'
 
     def __str__(self):
         return f'{self.author}::{self.content}'
