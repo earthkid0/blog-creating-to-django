@@ -14,5 +14,52 @@
     <h2>농작물</h2>
     <h2>사진</h2>
     <h3>아직 제작중</h3>
+    <h4>지도 등록하기</h4>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=rmlqnll9ah"></script>
+</head>
+<body>
+<div id="map" style="width:50%;height:400px;"></div>
+
+<script>
+
+
+
+var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(37.41543, 127.91798),
+    map: map
+});
+
+var cityhall = new naver.maps.LatLng(37.41543, 127.91798);
+
+var map = new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(37.41543, 127.91798),
+    zoom: 18
+});
+
+var contentString = [
+    '<div class="iw_inner">',
+    '   <h3>고옥들농장</h3>',
+    '   <p>강원도 원주시 호저면 주산리 949<br>',
+    '   </p>',
+    '</div>'
+].join('');
+
+var marker = new naver.maps.Marker({
+    map: map,
+    position: cityhall
+});
+
+var infowindow = new naver.maps.InfoWindow({
+    content: contentString
+});
+
+naver.maps.Event.addListener(marker, "click", function(e) {
+    if (infowindow.getMap()) {
+        infowindow.close();
+    } else {
+        infowindow.open(map, marker);
+    }
+});
+</script>
 </body>
 </html>
