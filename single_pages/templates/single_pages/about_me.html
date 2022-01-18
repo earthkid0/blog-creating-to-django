@@ -7,13 +7,13 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title>고옥들 농장 소개</title>
     <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
-
+    <link rel="stylesheet" href="{% static 'single_pages/css/about_me.css' %}" media="screen">
     <script src="https://kit.fontawesome.com/987e68c920.js" crossorigin="anonymous"></script>
 </head>
 <body>
     {% include 'blog/navbar.html' %}
 
-    <section>
+    <section class="margin-for-footer">
         <div class="container mt-4">
             <div class="row">
                 <div class="col-lg-8">
@@ -21,7 +21,7 @@
                     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=rmlqnll9ah"></script>
                     <div id="map" style="width:70%;height:350px;"></div>
                 </div>
-                <div class="col-lg-4 margin-for-footer">
+                <div class="col-lg-4">
                     <h2>소개</h2>
                     <p class="lead">고옥들농장</p>
                     <ul>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-
+    </section>
     
     
     <div class="fixed-bottom">
