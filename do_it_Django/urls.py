@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from django.views.generic import TemplateView
-
+from django.http import HttpResponse
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
@@ -26,6 +25,8 @@ urlpatterns = [
     path('markdownx/', include('markdownx.urls')),
     path('accounts/', include('allauth.urls')),
     path('',include('single_pages.urls')),
+    path('robots.txt/', lambda x: HttpResponse("User-Agent: *\nDisallow:", 
+         content_type="text/plain")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
