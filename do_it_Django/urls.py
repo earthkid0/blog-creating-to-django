@@ -26,7 +26,6 @@ urlpatterns = [
     path('markdownx/', include('markdownx.urls')),
     path('accounts/', include('allauth.urls')),
     path('',include('single_pages.urls')),
-    path('robots.txt',  TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
