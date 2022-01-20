@@ -24,9 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('blog/',include('blog.urls')),
     path('admin/', admin.site.urls),
-     path(
-        "robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
-    ),
+     path('robots.txt/', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('markdownx/', include('markdownx.urls')),
     path('accounts/', include('allauth.urls')),
     path('',include('single_pages.urls')),
